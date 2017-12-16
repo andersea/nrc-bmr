@@ -31,26 +31,38 @@ export = (RED: NodeRED.Red) => {
         this.on('input', (msg: ISubscriptionMessage) => {
             switch (msg.topic) {
                 case 'subscribe':
-                    configNode.client.addStream(
-                        msg.payload.symbol,
-                        msg.payload.table,
-                        (data: any, symbol: string, table: string) => {
-                            this.send({
-                                payload: data,
-                                symbol,
-                                topic: table,
-                            });
-                        }
-                    );
+                    try {
+                        this.send(
+                            configNode.client.addStream(
+                                msg.payload.symbol,
+                                msg.payload.table,
+                                (data: any, symbol: string, table: string) => {
+                                    this.send({
+                                        payload: data,
+                                        symbol,
+                                        topic: table,
+                                    });
+                                }
+                            )
+                        );
+                    } catch (error) {
+                        this.error('Subscription error', error);
+                    }
                     break;
                 case 'data':
-                    this.send(
-                        configNode.client.getData(
-                            msg.payload.symbol,
-                            msg.payload.table
-                        )
-                    );
+                    try {
+                        this.send(
+                            configNode.client.getData(
+                                msg.payload.symbol,
+                                msg.payload.table
+                            )
+                        );
+                    } catch (error) {
+                        this.error('Get data error', error);
+                    }
                     break;
+                default:
+                    this.error('Unknown message type', msg);
             }
         });
     });
