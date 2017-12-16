@@ -1,0 +1,30 @@
+<script type="text/x-red" data-template-name="bitmex-config">
+    <div class="form-row">
+        <label for="node-config-input-apiKeyID"><i class="fa fa-key"></i> Api Key ID</label>
+        <input type="text" id="node-config-input-apiKeyID">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-apiKeySecret"><i class="fa fa-user-secret"></i> Api Key Secret</label>
+        <input type="password" id="node-config-input-apiKeySecret" placeholder="secret">
+    </div>
+    <div class='form-row'>
+        <label>&nbsp;</label>
+        <input type='checkbox' id='node-config-input-testnet' placeholder='Testnet' style='display: inline-block; width: auto; vertical-align: top;'>
+        <label for='node-config-input-testnet' style='width: 70%;'><span> use testnet</span></label>
+    </div>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('bitmex-config', {
+        category: 'config',
+        defaults: {
+            apiKeyID: { value: "" },
+            apiKeySecret: { value: "" },
+            testnet: { value: false },
+        },
+        label: function () {
+            return (this.testnet ? 'Testnet' : 'Mainnet') + (this.apiKeyID ? ', api key: ' + this.apiKeyID.slice(0,9) + '...' : '');
+        },
+    });
+
+</script>

@@ -1,0 +1,75 @@
+{
+  "name": "aea-nrc-br",
+  "version": "0.0.1",
+  "description": "",
+  "license": "MIT",
+  "repository": "",
+  "author": {
+    "name": "Anders E. Andersen",
+    "email": "andersa@atlab.dk",
+    "url": "https://github.com/andersea"
+  },
+  "keywords": [
+    "bitmex",
+    "realtime",
+    "api",
+    "websocket"
+  ],
+  "files": [
+    "lib"
+  ],
+  "main": "lib/bitmex.js",
+  "typings": "lib/bitmex.d.ts",
+  "scripts": {
+    "clean": "rimraf lib && rimraf coverage",
+    "format": "prettier --write \"{src,__tests__}/**/*.ts\" --single-quote --trailing-comma es5",
+    "lint": "tslint --force --format verbose \"src/**/*.ts\"",
+    "prepublish": "npm run build",
+    "prebuild": "npm run clean && npm run format && npm run lint && echo Using TypeScript && tsc --version",
+    "build": "tsc --pretty",
+    "postbuild": "cpy icons/*.png lib --parents && cpy src/*.html lib",
+    "test": "jest",
+    "coverage": "jest --coverage",
+    "watch": "npm run build -- --watch",
+    "watch:test": "jest --watch"
+  },
+  "dependencies": {
+    "bitmex-realtime-api": "^0.2.3"
+  },
+  "devDependencies": {
+    "@types/jest": "^20.0.5",
+    "@types/node": "^8.0.0",
+    "@types/node-red": "^0.17.0",
+    "coveralls": "^2.0.0",
+    "cpy-cli": "^1.0.1",
+    "jest": "^20.0.4",
+    "jest-environment-node-debug": "^2.0.0",
+    "prettier": "^1.5.2",
+    "rimraf": "^2.0.0",
+    "ts-jest": "^20.0.7",
+    "ts-node": "^3.2.0",
+    "tslint": "^5.0.0",
+    "tslint-config-prettier": "^1.1.0",
+    "typescript": "^2.3.0"
+  },
+  "engines": {
+    "node": ">=6.0.0"
+  },
+  "jest": {
+    "transform": {
+      ".(ts)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|js)$",
+    "moduleFileExtensions": [
+      "ts",
+      "js"
+    ],
+    "testEnvironment": "node"
+  },
+  "node-red": {
+    "nodes": {
+      "bitmex-realtime": "lib/bitmex.js",
+      "bitmex-config": "lib/bitmex-config.js"
+    }
+  }
+}
