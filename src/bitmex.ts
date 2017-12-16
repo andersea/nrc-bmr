@@ -15,7 +15,7 @@ interface ISubscriptionMessage {
 }
 
 export = (RED: NodeRED.Red) => {
-    RED.nodes.registerType('bitmex-realtime', function(
+    RED.nodes.registerType('bitmex-realtime', function (
         this: NodeRED.Node,
         props: IBitMEXRealtimeNodeProperties
     ) {
@@ -31,23 +31,17 @@ export = (RED: NodeRED.Red) => {
         this.on('input', (msg: ISubscriptionMessage) => {
             switch (msg.topic) {
                 case 'subscribe':
-                    try {
-                        this.send(
-                            configNode.client.addStream(
-                                msg.payload.symbol,
-                                msg.payload.table,
-                                (data: any, symbol: string, table: string) => {
-                                    this.send({
-                                        payload: data,
-                                        symbol,
-                                        topic: table,
-                                    });
-                                }
-                            )
-                        );
-                    } catch (error) {
-                        this.error('Subscription error', error);
-                    }
+                    configNode.client.addStream(
+                        msg.payload.symbol,
+                        msg.payload.table,
+                        (data: any, symbol: string, table: string) => {
+                            this.send({
+                                payload: data,
+                                symbol,
+                                topic: table,
+                            });
+                        }
+                    );
                     break;
                 case 'data':
                     try {
@@ -58,7 +52,7 @@ export = (RED: NodeRED.Red) => {
                             )
                         );
                     } catch (error) {
-                        this.error('Get data error', error);
+                        this.error('Get data error: ' + error, msg);
                     }
                     break;
                 default:

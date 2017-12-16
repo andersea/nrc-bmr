@@ -13,7 +13,7 @@ export = (RED: NodeRED.Red) => {
         this.client = new BitMEXClient(props);
 
         this.client.on('error', (error: any) => {
-            this.error('BitMEX Realtime API Error', error);
+            this.error('BitMEX Realtime API Error: ' + error);
         });
 
         this.on('close', () => {
