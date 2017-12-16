@@ -10,7 +10,53 @@
 </script>
 
 <script type="text/x-red" data-help-name="bitmex-realtime">
-    <p>This node wraps the bitmex realtime websocket api.</p>
+<p>This node wraps the bitmex realtime websocket api.</p>
+<p>Subscriptions are added by sending an input message with this form</p>
+<h3>Subscription</h3>
+<dl class="message-properties">
+    <dt>topic <span class="property-type">string</span></dt>
+    <dd>Must contain the string "subscribe".</dd>
+    <dt>payload <span class="property-type">object</span></dt>
+    <dd>
+        <dl>
+            <dt>symbol</dt>
+            <dd>symbol to listen to</dd>
+            <dt>table</dt>
+            <dd>table to listen to</dd>
+        </dl>
+    </dd>
+</dl>
+<p>Several combinations of symbol and table are possible.
+Consult the official api documentation for more info.</p>
+<p>The current state of a given table can be queried by
+sending a message to the node with this form</p>
+<h3>Data</h3>
+<dl class="message-properties">
+    <dt>topic <span class="property-type">string</span></dt>
+    <dd>Must contain the string "data".</dd>
+    <dt>payload <span class="property-type">object</span></dt>
+    <dd>
+        <dl>
+            <dt>symbol</dt>
+            <dd>symbol to get data for</dd>
+            <dt>table</dt>
+            <dd>table to get data for</dd>
+        </dl>
+    </dd>
+</dl>
+<h3>Details</h3>
+<p>The node listens to updates on subscribed tables and
+sends a message with the updated table data on each
+change.</p>
+<p>Configure a connection to either mainnet or testnet,
+by adding a configuration setting. To access private
+streams, supply an api key and secret, in the configuration.</p>
+<p>Each configured connection uses a common pool of data. This opens
+up to some advanced usage, by which you could subscribe to a list
+of tables in one node, and query the data in another node, even
+from another flow. You do not need to subscribe to the stream
+a second time, if you only want to query the data on demand and
+are not interested in continuous updates.</p>
 </script>
 
 <script type="text/javascript">
