@@ -7,7 +7,7 @@ interface IBitMEXRealtimeNodeProperties extends NodeRED.NodeProperties {
 }
 
 interface ISubscriptionMessage {
-    topic: 'subscribe' | 'data';
+    topic: 'subscribe' | 'get';
     payload: {
         symbol?: string;
         table?: string;
@@ -15,7 +15,7 @@ interface ISubscriptionMessage {
 }
 
 export = (RED: NodeRED.Red) => {
-    RED.nodes.registerType('bitmex-realtime', function (
+    RED.nodes.registerType('bitmex-realtime', function(
         this: NodeRED.Node,
         props: IBitMEXRealtimeNodeProperties
     ) {
@@ -43,7 +43,7 @@ export = (RED: NodeRED.Red) => {
                         }
                     );
                     break;
-                case 'data':
+                case 'get':
                     try {
                         this.send(
                             configNode.client.getData(
