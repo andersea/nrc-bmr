@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "",
   "license": "MIT",
-  "repository": "",
+  "repository": "https://github.com/andersea/nrc-bmr",
   "author": {
     "name": "Anders E. Andersen",
     "email": "andersa@atlab.dk",
@@ -35,7 +35,7 @@
     "watch:test": "jest --watch"
   },
   "dependencies": {
-    "bitmex-realtime-api": "^0.2.4"
+    "bitmex-realtime-api": "^0.2.5"
   },
   "devDependencies": {
     "@types/jest": "^20.0.5",
