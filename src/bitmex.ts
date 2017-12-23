@@ -35,22 +35,32 @@ export = (RED: NodeRED.Red) => {
                         msg.payload.symbol,
                         msg.payload.table,
                         (data: any, symbol: string, table: string) => {
-                            this.send({
-                                payload: data,
-                                symbol,
-                                topic: table,
-                            });
+                            Array.isArray(data) && data.length === 1
+                                ? this.send({
+                                      payload: data[0],
+                                      symbol,
+                                      topic: table,
+                                  })
+                                : this.send({
+                                      payload: data,
+                                      symbol,
+                                      topic: table,
+                                  });
                         }
                     );
                     break;
                 case 'get':
                     try {
-                        this.send(
-                            configNode.client.getData(
-                                msg.payload.symbol,
-                                msg.payload.table
-                            )
+                        const data = configNode.client.getData(
+                            msg.payload.symbol,
+                            msg.payload.table
                         );
+                        (msg as any).topic = msg.payload.table;
+                        (msg as any).symbol = msg.payload.symbol;
+                        Array.isArray(data) && data.length === 1
+                            ? (msg.payload = data[0])
+                            : (msg.payload = data);
+                        this.send(msg);
                     } catch (error) {
                         this.error('Get data error: ' + error, msg);
                     }
