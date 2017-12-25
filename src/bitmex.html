@@ -71,7 +71,8 @@ are not interested in continuous updates.</p>
         outputs: 1,
         icon: "bitmex-white.png",
         label: function () {
-            return this.name || "bitmex-realtime";
+            const configNode = RED.nodes.node(this.config);
+            return this.name || (configNode ? configNode.label() : "bitmex-realtime");
         },
         labelStyle: function () {
             return this.name ? "node_label_italic" : "";
