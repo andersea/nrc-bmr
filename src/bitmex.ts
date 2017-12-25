@@ -6,8 +6,8 @@ interface IBitMEXRealtimeNodeProperties extends NodeRED.NodeProperties {
     config: NodeRED.NodeId;
 }
 
-interface ISubscriptionMessage {
-    topic: 'subscribe' | 'get';
+interface IBitMEXRealtimeNodeMessage {
+    topic: 'subscribe' | 'get' | 'reset';
     payload: {
         symbol?: string;
         table?: string;
@@ -28,7 +28,7 @@ export = (RED: NodeRED.Red) => {
             return this.error('Connection not configured');
         }
 
-        this.on('input', (msg: ISubscriptionMessage) => {
+        this.on('input', (msg: IBitMEXRealtimeNodeMessage) => {
             switch (msg.topic) {
                 case 'subscribe':
                     configNode.client.addStream(
@@ -64,6 +64,10 @@ export = (RED: NodeRED.Red) => {
                     } catch (error) {
                         this.error('Get data error: ' + error, msg);
                     }
+                    break;
+                case 'reset':
+                    configNode.client.emit('close');
+                    this.send(msg);
                     break;
                 default:
                     this.error('Unknown message type', msg);
