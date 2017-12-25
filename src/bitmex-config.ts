@@ -10,14 +10,24 @@ export = (RED: NodeRED.Red) => {
     ) {
         RED.nodes.createNode(this, props);
 
-        this.client = new BitMEXClient(props);
+        let client: any;
 
-        this.client.on('error', (error: any) => {
-            this.error('BitMEX Realtime API Error: ' + error);
-        });
+        Object.defineProperty(this, 'client', {
+            get: () => {
+                if (!client) {
+                    client = new BitMEXClient(props);
 
-        this.on('close', () => {
-            this.client.removeAllListeners();
+                    client.on('error', (error: any) => {
+                        this.error('BitMEX Realtime API Error: ' + error);
+                    });
+
+                    client.on('close', () => {
+                        client.removeAllListeners();
+                        client = null;
+                    });
+                }
+                return client;
+            },
         });
     });
 };
