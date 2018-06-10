@@ -35,17 +35,25 @@ export = (RED: NodeRED.Red) => {
                         msg.payload.symbol,
                         msg.payload.table,
                         (data: any, symbol: string, table: string) => {
-                            Array.isArray(data) && data.length === 1
-                                ? this.send({
-                                      payload: data[0],
-                                      symbol,
-                                      topic: table,
-                                  })
-                                : this.send({
-                                      payload: data,
-                                      symbol,
-                                      topic: table,
-                                  });
+                            if (Array.isArray(data) && data.length === 1) {
+                                if (symbol !== '*') {
+                                    data = configNode.client.getData(
+                                        symbol,
+                                        table
+                                    );
+                                }
+                                this.send({
+                                    payload: data[0],
+                                    symbol,
+                                    topic: table,
+                                });
+                            } else {
+                                this.send({
+                                    payload: data,
+                                    symbol,
+                                    topic: table,
+                                });
+                            }
                         }
                     );
                     break;
@@ -65,10 +73,10 @@ export = (RED: NodeRED.Red) => {
                         this.error('Get data error: ' + error, msg);
                     }
                     break;
-                case 'reset':
-                    configNode.client.emit('close');
-                    this.send(msg);
-                    break;
+                // case 'reset':
+                //     configNode.client.emit('close');
+                //     this.send(msg);
+                //     break;
                 default:
                     this.error('Unknown message type', msg);
             }

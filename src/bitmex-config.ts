@@ -20,11 +20,6 @@ export = (RED: NodeRED.Red) => {
                     client.on('error', (error: any) => {
                         this.error('BitMEX Realtime API Error: ' + error);
                     });
-
-                    client.on('close', () => {
-                        client.removeAllListeners();
-                        client = null;
-                    });
                 }
                 return client;
             },
