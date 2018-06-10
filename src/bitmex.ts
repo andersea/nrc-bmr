@@ -73,10 +73,6 @@ export = (RED: NodeRED.Red) => {
                         this.error('Get data error: ' + error, msg);
                     }
                     break;
-                // case 'reset':
-                //     configNode.client.emit('close');
-                //     this.send(msg);
-                //     break;
                 default:
                     this.error('Unknown message type', msg);
             }
