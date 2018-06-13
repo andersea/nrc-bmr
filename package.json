@@ -35,7 +35,7 @@
     "watch:test": "jest --watch"
   },
   "dependencies": {
-    "bitmex-realtime-api": "./bitmex-realtime-api"
+    "@andersea/bitmex-realtime-api": "^0.3.1"
   },
   "devDependencies": {
     "@types/jest": "^20.0.5",
